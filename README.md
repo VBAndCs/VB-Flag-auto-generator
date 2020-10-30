@@ -1,4 +1,4 @@
-"# Flag-auto-generator" 
+# Flag auto-generator
 ![Flags](https://user-images.githubusercontent.com/48354902/97733916-1c518380-1ae1-11eb-8454-c197d006b826.jpg)
 A Windows Forms app, that allows ypo to enter the name fof the Flag and its membres, then press the Generate button to auto-generate a class that represents this flags and its members, and many methods to do flag operations and set and unset flags.
 The underline type of the flag is Integer, and it contains CType operators to convert between them. This is a list of the members added to the class:
