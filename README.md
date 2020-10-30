@@ -1,7 +1,7 @@
 # Flag auto-generator
 ![Flags](https://user-images.githubusercontent.com/48354902/97733916-1c518380-1ae1-11eb-8454-c197d006b826.jpg)
-A Windows Forms app, that allows you to enter the name fof the Flag and its membres, then press the Generate button to auto-generate a class that represents this flags and its members, and many methods to do flag operations and set and unset flags.
-The underline type of the flag is Integer, and it contains CType operators to convert between them. This is a list of the members added to the class:
+A Windows Forms app, that allows you to enter the name of the Flag and its members, then press the Generate button to auto-generate a class that represents this flags and its members, and many methods to do flag operations and set and unset flags.
+The underline type of the flag is Integer, and the class contains CType operators to convert between them. This is a list of the members I added to the class:
 Shared Fields:  
     NoneSet
     AllSet
@@ -27,7 +27,7 @@ Instance Methods:
     AreAnySet
     AreAnyUnset
 
-This is a sample of an auto-ganerated Flag:
+And this is a sample of an auto-generated Flag:
 ```VB.NET
 
 Class MyFlag
