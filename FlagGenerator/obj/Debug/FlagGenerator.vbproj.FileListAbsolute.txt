@@ -1,0 +1,12 @@
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\bin\Debug\FlagGenerator.exe.config
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\bin\Debug\FlagGenerator.exe
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\bin\Debug\FlagGenerator.pdb
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\bin\Debug\FlagGenerator.xml
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\obj\Debug\FlagGenerator.vbprojAssemblyReference.cache
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\obj\Debug\FlagGenerator.Form1.resources
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\obj\Debug\FlagGenerator.Resources.resources
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\obj\Debug\FlagGenerator.vbproj.GenerateResource.cache
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\obj\Debug\FlagGenerator.vbproj.CoreCompileInputs.cache
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\obj\Debug\FlagGenerator.exe
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\obj\Debug\FlagGenerator.xml
+F:\_VS.NET\_برامجي\FlagGenerator\FlagGenerator\obj\Debug\FlagGenerator.pdb
