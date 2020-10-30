@@ -9,8 +9,8 @@ Class FlagGenerator
 Class #FlagName#
 #Flags#
 
-    Public Shared ReadOnly NoneSet As #FlagName# = 0
-    Public Shared ReadOnly AllSet As #FlagName# = #MaxValue#
+    Public Shared ReadOnly NoneSet As New #FlagName# (""None"", 0)
+    Public Shared ReadOnly AllSet As New #FlagName#(""All"", #MaxValue#)
 
     Public Shared ReadOnly Property Flags As #FlagName#() = {#FlagList#}
     Public Shared ReadOnly Property FlagNames As String() = {#StrFlagList#}
@@ -57,7 +57,50 @@ Class #FlagName#
         Return flag.Value
     End Operator
 
+
+    Public Shared Operator +(flag As #FlagName#, value As Integer) As Integer
+        Return flag.Value + value
+    End Operator
+
+    Public Shared Operator -(flag As #FlagName#, value As Integer) As Integer
+        Return flag.Value - value
+    End Operator
+
+    Public Shared Operator *(flag As #FlagName#, value As Integer) As Integer
+        Return flag.Value * value
+    End Operator
+
+    Public Shared Operator /(flag As #FlagName#, value As Integer) As Integer
+        Return flag.Value / value
+    End Operator
+
+    Public Shared Operator =(flag As #FlagName#, value As Integer) As Integer
+        Return flag.Value = value
+    End Operator
+
+    Public Shared Operator <>(flag As #FlagName#, value As Integer) As Integer
+        Return flag.Value <> value
+    End Operator
+
+    Public Shared Operator >(flag As #FlagName#, value As Integer) As Integer
+        Return flag.Value > value
+    End Operator
+
+    Public Shared Operator <(flag As #FlagName#, value As Integer) As Integer
+        Return flag.Value < value
+    End Operator
+
+    Public Shared Operator >=(flag As #FlagName#, value As Integer) As Integer
+        Return flag.Value >= value
+    End Operator
+
+    Public Shared Operator <=(flag As #FlagName#, value As Integer) As Integer
+        Return flag.Value <= value
+    End Operator
+
     Public Overrides Function ToString() As String
+        If Value = 0 Then Return NoneSet.Name
+        If Value = AllSet.Value Then Return AllSet.Name
         Dim sb As New Text.StringBuilder
         For Each flag In Flags
             If (Value And flag.Value) > 0 Then

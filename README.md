@@ -34,8 +34,10 @@ Class MyFlag
     Public Shared ReadOnly X As new MyFlag("X", 1)
     Public Shared ReadOnly Y As new MyFlag("Y", 2)
     Public Shared ReadOnly Z As new MyFlag("Z", 4)
-    Public Shared ReadOnly NoneSet As MyFlag = 0
-    Public Shared ReadOnly AllSet As MyFlag = 7
+
+
+    Public Shared ReadOnly NoneSet As New MyFlag ("None", 0)
+    Public Shared ReadOnly AllSet As New MyFlag("All", 7)
 
     Public Shared ReadOnly Property Flags As MyFlag() = {X, Y, Z}
     Public Shared ReadOnly Property FlagNames As String() = {"X", "Y", "Z"}
@@ -82,7 +84,50 @@ Class MyFlag
         Return flag.Value
     End Operator
 
+
+    Public Shared Operator +(flag As MyFlag, value As Integer) As Integer
+        Return flag.Value + value
+    End Operator
+
+    Public Shared Operator -(flag As MyFlag, value As Integer) As Integer
+        Return flag.Value - value
+    End Operator
+
+    Public Shared Operator *(flag As MyFlag, value As Integer) As Integer
+        Return flag.Value * value
+    End Operator
+
+    Public Shared Operator /(flag As MyFlag, value As Integer) As Integer
+        Return flag.Value / value
+    End Operator
+
+    Public Shared Operator =(flag As MyFlag, value As Integer) As Integer
+        Return flag.Value = value
+    End Operator
+
+    Public Shared Operator <>(flag As MyFlag, value As Integer) As Integer
+        Return flag.Value <> value
+    End Operator
+
+    Public Shared Operator >(flag As MyFlag, value As Integer) As Integer
+        Return flag.Value > value
+    End Operator
+
+    Public Shared Operator <(flag As MyFlag, value As Integer) As Integer
+        Return flag.Value < value
+    End Operator
+
+    Public Shared Operator >=(flag As MyFlag, value As Integer) As Integer
+        Return flag.Value >= value
+    End Operator
+
+    Public Shared Operator <=(flag As MyFlag, value As Integer) As Integer
+        Return flag.Value <= value
+    End Operator
+
     Public Overrides Function ToString() As String
+        If Value = 0 Then Return NoneSet.Name
+        If Value = AllSet.Value Then Return AllSet.Name
         Dim sb As New Text.StringBuilder
         For Each flag In Flags
             If (Value And flag.Value) > 0 Then
@@ -188,20 +233,6 @@ Class MyFlag
         Return False
     End Function
 End Class
-```
-
-and this is a sample top show how to use it:
-```VB.NET
-Dim flag As MyFlag = MyFlag.X
-        flag = flag.SetFlags(MyFlag.Z)
-        Console.WriteLine(flag) ' X + Z
-        Console.WriteLine(flag.AreAllSet()) ' False
-        flag = flag.ToggleAllFlags()
-        Console.WriteLine(flag) ' Y
-        flag = flag.SetFlags(MyFlag.Z)
-        Console.WriteLine(flag) ' Y + Z
-        Console.WriteLine(flag.ToInteger) ' 6
-        Console.WriteLine(flag.AreAllSet(MyFlag.Y, MyFlag.Z)) ' True
 ```
 
 # To Do:
