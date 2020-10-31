@@ -20,10 +20,13 @@ Instance Methods:
     ToString()
     ToString(separator)
     ToInteger
+    SetFlag
     SetFlags
     SetAllExcxept
+    UnsetFlag
     UnsetFlags
     UnsetAllExcxept
+    ToggleFlag
     ToggleFlags
     ToggleAllFlags()
     AreAllSet

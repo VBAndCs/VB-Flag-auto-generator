@@ -193,8 +193,12 @@
         Return Value
     End Function
 
+   Public Function SetFlag(flag As #FlagName#) As #FlagName#
+        Return New #FlagName#(Value Or flag.Value)
+    End Function
+
     Public Function SetFlags(ParamArray flags() As #FlagName#) As #FlagName#
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value
+        If flags Is Nothing OrElse flags.Length = 0 Then Return new #FlagName#(Value)
 
         Dim v = Value
         For Each flag In flags
@@ -204,7 +208,7 @@
     End Function
 
     Public Function SetAllExcxept(ParamArray flags() As #FlagName#) As #FlagName#
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value
+        If flags Is Nothing OrElse flags.Length = 0 Then Return new #FlagName#(Value)
 
         Dim v As UInteger = 0
         For Each flag In flags
@@ -213,9 +217,12 @@
         Return New #FlagName#(Value And Not v)
     End Function
 
+   Public Function UnsetFlag(flag As #FlagName#) As #FlagName#
+        Return New #FlagName#(Value And Not flag.Value)
+    End Function
 
     Public Function UnsetFlags(ParamArray flags() As #FlagName#) As #FlagName#
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value
+        If flags Is Nothing OrElse flags.Length = 0 Then Return new #FlagName#(Value)
 
         Dim v = Value
         For Each flag In flags
@@ -225,7 +232,7 @@
     End Function
 
     Public Function UnsetAllExcxept(ParamArray flags() As #FlagName#) As #FlagName#
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value
+        If flags Is Nothing OrElse flags.Length = 0 Then Return new #FlagName#(Value)
 
         Dim v As UInteger = 0
         For Each flag In flags
@@ -234,8 +241,12 @@
         Return New #FlagName#(v)
     End Function
 
+   Public Function ToggleFlag(flag As #FlagName#) As #FlagName#
+        Return New #FlagName#(Value Xor flag.Value)
+    End Function
+
     Public Function ToggleFlags(ParamArray flags() As #FlagName#) As #FlagName#
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value
+        If flags Is Nothing OrElse flags.Length = 0 Then Return new #FlagName#(Value)
 
         Dim v = Value
         For Each flag In flags
@@ -295,26 +306,14 @@
     End Operator
 
 
-    Public Shared Operator +(flag As #FlagName#, value As Integer) As Integer
-        Return flag.Value + value
+    Public Shared Operator +(flag As #FlagName#, value As Integer) As #FlagName#
+        Return flag.SetFlags(new #FlagName#(value))
     End Operator
 
-    Public Shared Operator -(flag As #FlagName#, value As Integer) As Integer
-        Return flag.Value - value
+    Public Shared Operator -(flag As #FlagName#, value As Integer) As #FlagName#
+        Return flag.UnsetFlags(new #FlagName#(value))
     End Operator
 
-    Public Shared Operator *(flag As #FlagName#, value As Integer) As Integer
-        Return flag.Value * value
-    End Operator
-
-    Public Shared Operator /(flag As #FlagName#, value As Integer) As Double
-        Return flag.Value / value
-    End Operator
-
-    Public Shared Operator ^(flag As #FlagName#, value As Integer) As Long
-        Return flag.Value ^ value
-    End Operator
-    
     Public Shared Operator Or(flag As #FlagName#, value As UInteger) As #FlagName#
         Return New #FlagName#(flag.Value Or value)
     End Operator
@@ -363,26 +362,13 @@
         Return flag.Value &lt;= value
     End Operator
 
-    Public Shared Operator +(flag1 As #FlagName#, flag2 As #FlagName#) As UInteger
-        Return flag1.Value + flag2.Value
+    Public Shared Operator +(flag1 As #FlagName#, flag2 As #FlagName#) As #FlagName#
+        Return flag1.SetFlags(flag2)
     End Operator
 
-    Public Shared Operator -(flag1 As #FlagName#, flag2 As #FlagName#) As Integer
-        Return flag1.Value - flag2.Value
+    Public Shared Operator -(flag1 As #FlagName#, flag2 As #FlagName#) As #FlagName#
+        Return flag1.UnsetFlags(flag2)
     End Operator
-
-    Public Shared Operator *(flag1 As #FlagName#, flag2 As #FlagName#) As UInteger
-        Return flag1.Value * flag2.Value
-    End Operator
-
-    Public Shared Operator /(flag1 As #FlagName#, flag2 As #FlagName#) As Double
-        Return flag1.Value / flag2.Value
-    End Operator
-
-    Public Shared Operator ^(flag1 As #FlagName#, flag2 As #FlagName#) As Long
-        Return flag1.Value ^ flag2.Value
-    End Operator
-
     Public Shared Operator Or(flag1 As #FlagName#, flag2 As #FlagName#) As #FlagName#
         Return New #FlagName#(flag1.Value Or flag2.Value)
     End Operator
