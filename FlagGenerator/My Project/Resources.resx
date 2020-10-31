@@ -284,23 +284,23 @@
     End Operator
 
 
-    Public Shared Operator +(flag As #FlagName#, value As UInteger) As UInteger
+    Public Shared Operator +(flag As #FlagName#, value As Integer) As Integer
         Return flag.Value + value
     End Operator
 
-    Public Shared Operator -(flag As #FlagName#, value As UInteger) As UInteger
+    Public Shared Operator -(flag As #FlagName#, value As Integer) As Integer
         Return flag.Value - value
     End Operator
 
-    Public Shared Operator *(flag As #FlagName#, value As UInteger) As UInteger
+    Public Shared Operator *(flag As #FlagName#, value As Integer) As Integer
         Return flag.Value * value
     End Operator
 
-    Public Shared Operator /(flag As #FlagName#, value As UInteger) As Double
+    Public Shared Operator /(flag As #FlagName#, value As Integer) As Double
         Return flag.Value / value
     End Operator
 
-    Public Shared Operator ^(flag As #FlagName#, value As UInteger) As Long
+    Public Shared Operator ^(flag As #FlagName#, value As Integer) As Long
         Return flag.Value ^ value
     End Operator
     
@@ -356,7 +356,7 @@
         Return flag1.Value + flag2.Value
     End Operator
 
-    Public Shared Operator -(flag1 As #FlagName#, flag2 As #FlagName#) As UInteger
+    Public Shared Operator -(flag1 As #FlagName#, flag2 As #FlagName#) As Integer
         Return flag1.Value - flag2.Value
     End Operator
 
