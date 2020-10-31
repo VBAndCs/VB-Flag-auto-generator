@@ -63,16 +63,22 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Class #FlagName#
         '''#Flags#
-        '''    Public Shared ReadOnly NoneSet As New #FlagName# (&quot;None&quot;, 0)
-        '''    Public Shared ReadOnly AllSet As New #FlagName#(&quot;All&quot;, #MaxValue#)
+        '''    Const MaxValue As Uinteger = #MaxValue#
+        '''    Public Shared ReadOnly None As New #FlagName# (&quot;None&quot;, 0)
+        '''    Public Shared ReadOnly All As New #FlagName#(&quot;All&quot;, MaxValue)
         '''
-        '''    Public Shared ReadOnly Property Flags As #FlagName#() = {#FlagList#}
-        '''    Public Shared ReadOnly Property FlagNames As String() = {#StrFlagList#}
-        '''    Public Shared ReadOnly Property FlagValues As Integer() = {#ValueList#}
-        '''    Public ReadOnly Property Name As String
+        '''    Private ReadOnly Value As UInteger
         '''
-        '''    Public ReadOnly Property OnFlags As List(Of #FlagName#)
-        '''        G [rest of string was truncated]&quot;;.
+        '''    Private Sub New(value As UInteger)
+        '''        Me.Value = If(value &gt; MaxValue, MaxValue, value)
+        '''    End Sub
+        '''
+        '''    Private Sub New(name As String, value As UInteger)
+        '''        _Name = name
+        '''        Me.Value = If(value &gt; MaxValue, MaxValue, value)
+        '''    End Sub
+        '''
+        '''   [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property FlagTemplate() As String
             Get

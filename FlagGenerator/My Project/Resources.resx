@@ -120,12 +120,24 @@
   <data name="FlagTemplate" xml:space="preserve">
     <value>Class #FlagName#
 #Flags#
-    Public Shared ReadOnly NoneSet As New #FlagName# ("None", 0)
-    Public Shared ReadOnly AllSet As New #FlagName#("All", #MaxValue#)
+    Const MaxValue As Uinteger = #MaxValue#
+    Public Shared ReadOnly None As New #FlagName# ("None", 0)
+    Public Shared ReadOnly All As New #FlagName#("All", MaxValue)
+
+    Private ReadOnly Value As UInteger
+
+    Private Sub New(value As UInteger)
+        Me.Value = If(value &gt; MaxValue, MaxValue, value)
+    End Sub
+
+    Private Sub New(name As String, value As UInteger)
+        _Name = name
+        Me.Value = If(value &gt; MaxValue, MaxValue, value)
+    End Sub
 
     Public Shared ReadOnly Property Flags As #FlagName#() = {#FlagList#}
     Public Shared ReadOnly Property FlagNames As String() = {#StrFlagList#}
-    Public Shared ReadOnly Property FlagValues As Integer() = {#ValueList#}
+    Public Shared ReadOnly Property FlagValues As UInteger() = {#ValueList#}
     Public ReadOnly Property Name As String
 
     Public ReadOnly Property OnFlags As List(Of #FlagName#)
@@ -149,24 +161,13 @@
     End Property
 
 
-    Dim Value As Integer
-
-    Private Sub New(value As Integer)
-        Me.Value = value
-    End Sub
-
-    Private Sub New(name As String, value As Integer)
-        _Name = name
-        Me.Value = value
-    End Sub
-
     Public Overrides Function ToString() As String
         Return ToString("+")
     End Function
 
     Public Overloads Function ToString(Separator As String) As String
-        If Value = 0 Then Return NoneSet.Name
-        If Value = AllSet.Value Then Return AllSet.Name
+        If Value = 0 Then Return None.Name
+        If Value = MaxValue Then Return All.Name
         Dim sb As New Text.StringBuilder
         For Each flag In Flags
             If (Value And flag.Value) &gt; 0 Then
@@ -177,7 +178,7 @@
         Return sb.ToString
     End Function
 
-    Public Function ToInteger() As Integer
+    Public Function ToInteger() As UInteger
         Return Value
     End Function
 
@@ -194,7 +195,7 @@
     Public Function SetAllExcxept(ParamArray flags() As #FlagName#) As #FlagName#
         If flags Is Nothing OrElse flags.Length = 0 Then Return Value
 
-        Dim v As Integer = 0
+        Dim v As UInteger = 0
         For Each flag In flags
             v = v Or flag.Value
         Next
@@ -215,7 +216,7 @@
     Public Function UnsetAllExcxept(ParamArray flags() As #FlagName#) As #FlagName#
         If flags Is Nothing OrElse flags.Length = 0 Then Return Value
 
-        Dim v As Integer = 0
+        Dim v As UInteger = 0
         For Each flag In flags
             v = v Or flag.Value
         Next
@@ -274,44 +275,44 @@
 
 #Region "Operators"
 
-    Public Shared Widening Operator CType(value As Integer) As #FlagName#
+    Public Shared Widening Operator CType(value As UInteger) As #FlagName#
         Return New #FlagName#(value)
     End Operator
 
-    Public Shared Narrowing Operator CType(flag As #FlagName#) As Integer
+    Public Shared Narrowing Operator CType(flag As #FlagName#) As UInteger
         Return flag.Value
     End Operator
 
 
-    Public Shared Operator +(flag As #FlagName#, value As Integer) As Integer
+    Public Shared Operator +(flag As #FlagName#, value As UInteger) As UInteger
         Return flag.Value + value
     End Operator
 
-    Public Shared Operator -(flag As #FlagName#, value As Integer) As Integer
+    Public Shared Operator -(flag As #FlagName#, value As UInteger) As UInteger
         Return flag.Value - value
     End Operator
 
-    Public Shared Operator *(flag As #FlagName#, value As Integer) As Integer
+    Public Shared Operator *(flag As #FlagName#, value As UInteger) As UInteger
         Return flag.Value * value
     End Operator
 
-    Public Shared Operator /(flag As #FlagName#, value As Integer) As Double
+    Public Shared Operator /(flag As #FlagName#, value As UInteger) As Double
         Return flag.Value / value
     End Operator
 
-    Public Shared Operator ^(flag As #FlagName#, value As Integer) As Long
+    Public Shared Operator ^(flag As #FlagName#, value As UInteger) As Long
         Return flag.Value ^ value
     End Operator
     
-    Public Shared Operator Or(flag As #FlagName#, value As Integer) As #FlagName#
+    Public Shared Operator Or(flag As #FlagName#, value As UInteger) As #FlagName#
         Return New #FlagName#(flag.Value Or value)
     End Operator
 
-    Public Shared Operator And(flag As #FlagName#, value As Integer) As #FlagName#
+    Public Shared Operator And(flag As #FlagName#, value As UInteger) As #FlagName#
         Return New #FlagName#(flag.Value And value)
     End Operator
 
-    Public Shared Operator Xor(flag As #FlagName#, value As Integer) As #FlagName#
+    Public Shared Operator Xor(flag As #FlagName#, value As UInteger) As #FlagName#
         Return New #FlagName#(flag.Value Xor value)
     End Operator
 
@@ -327,39 +328,39 @@
         Return flag.Value = 0
     End Operator
 
-    Public Shared Operator =(flag As #FlagName#, value As Integer) As Boolean
+    Public Shared Operator =(flag As #FlagName#, value As UInteger) As Boolean
         Return flag.Value = value
     End Operator
 
-    Public Shared Operator &lt;&gt;(flag As #FlagName#, value As Integer) As Boolean
+    Public Shared Operator &lt;&gt;(flag As #FlagName#, value As UInteger) As Boolean
         Return flag.Value &lt;&gt; value
     End Operator
 
-    Public Shared Operator &gt;(flag As #FlagName#, value As Integer) As Boolean
+    Public Shared Operator &gt;(flag As #FlagName#, value As UInteger) As Boolean
         Return flag.Value &gt; value
     End Operator
 
-    Public Shared Operator &lt;(flag As #FlagName#, value As Integer) As Boolean
+    Public Shared Operator &lt;(flag As #FlagName#, value As UInteger) As Boolean
         Return flag.Value &lt; value
     End Operator
 
-    Public Shared Operator &gt;=(flag As #FlagName#, value As Integer) As Boolean
+    Public Shared Operator &gt;=(flag As #FlagName#, value As UInteger) As Boolean
         Return flag.Value &gt;= value
     End Operator
 
-    Public Shared Operator &lt;=(flag As #FlagName#, value As Integer) As Boolean
+    Public Shared Operator &lt;=(flag As #FlagName#, value As UInteger) As Boolean
         Return flag.Value &lt;= value
     End Operator
 
-    Public Shared Operator +(flag1 As #FlagName#, flag2 As #FlagName#) As Integer
+    Public Shared Operator +(flag1 As #FlagName#, flag2 As #FlagName#) As UInteger
         Return flag1.Value + flag2.Value
     End Operator
 
-    Public Shared Operator -(flag1 As #FlagName#, flag2 As #FlagName#) As Integer
+    Public Shared Operator -(flag1 As #FlagName#, flag2 As #FlagName#) As UInteger
         Return flag1.Value - flag2.Value
     End Operator
 
-    Public Shared Operator *(flag1 As #FlagName#, flag2 As #FlagName#) As Integer
+    Public Shared Operator *(flag1 As #FlagName#, flag2 As #FlagName#) As UInteger
         Return flag1.Value * flag2.Value
     End Operator
 
