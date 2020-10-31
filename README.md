@@ -4,8 +4,8 @@ A Windows Forms app, that allows you to enter the name of the Flag and its membe
 The underline type of the flag is UInteger, and the class contains CType, Logicak and arithmetic operators to convert between them. 
 This is a list of the members I added to the class, noting that the flag is immutable, and methods don't change its state, but return a new instance carring the result:
 Shared Fields:  
-    NoneSet
-    AllSet
+    None
+    All
 Shared Properties:
     Flags
     FlagNames 
