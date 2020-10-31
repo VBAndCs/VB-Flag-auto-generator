@@ -295,7 +295,7 @@
         Return flag.Value * value
     End Operator
 
-    Public Shared Operator /(flag As #FlagName#, value As Integer) As Integer
+    Public Shared Operator /(flag As #FlagName#, value As Integer) As Double
         Return flag.Value / value
     End Operator
 
