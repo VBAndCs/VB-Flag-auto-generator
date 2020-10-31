@@ -3,6 +3,7 @@
 A Windows Forms app, that allows you to enter the name of the Flag and its members, then press the Generate button to auto-generate a class that represents this flags and its members, and many methods to do flag operations and set and unset flags.
 The underline type of the flag is UInteger, and the class contains CType, Logicak and arithmetic operators to convert between them. 
 This is a list of the members I added to the class, noting that the flag is immutable, and methods don't change its state, but return a new instance carring the result:
+```
 Shared Fields:  
     None
     All
@@ -28,6 +29,7 @@ Instance Methods:
     AreAllUnset
     AreAnySet
     AreAnyUnset
+```
 
 And this is a sample of an auto-generated Flag:
 ```VB.NET
