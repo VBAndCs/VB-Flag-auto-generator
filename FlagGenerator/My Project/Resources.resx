@@ -127,12 +127,12 @@
     Private ReadOnly Value As UInteger
 
     Private Sub New(value As UInteger)
-        Me.Value = If(value &gt; MaxValue, MaxValue, value)
+        Me.Value = If(value &gt; MaxValue, value And MaxValue, value)
     End Sub
 
     Private Sub New(name As String, value As UInteger)
         _Name = name
-        Me.Value = If(value &gt; MaxValue, MaxValue, value)
+        Me.Value = If(value &gt; MaxValue, value And MaxValue, value)
     End Sub
 
     Public Shared ReadOnly Property Flags As #FlagName#() = {#FlagList#}
@@ -210,11 +210,11 @@
     Public Function SetAllExcxept(ParamArray flags() As #FlagName#) As #FlagName#
         If flags Is Nothing OrElse flags.Length = 0 Then Return new #FlagName#(Value)
 
-        Dim v As UInteger = 0
+        Dim v = MaxValue
         For Each flag In flags
-            v = v Or flag.Value
+            v -= flag.Value
         Next
-        Return New #FlagName#(Value And Not v)
+        Return New #FlagName#(v)
     End Function
 
    Public Function UnsetFlag(flag As #FlagName#) As #FlagName#
@@ -236,7 +236,7 @@
 
         Dim v As UInteger = 0
         For Each flag In flags
-            v = v Or flag.Value
+            v += flag.Value
         Next
         Return New #FlagName#(v)
     End Function

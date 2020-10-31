@@ -70,15 +70,12 @@ Namespace My.Resources
         '''    Private ReadOnly Value As UInteger
         '''
         '''    Private Sub New(value As UInteger)
-        '''        Me.Value = If(value &gt; MaxValue, MaxValue, value)
+        '''        Me.Value = If(value &gt; MaxValue, value And MaxValue, value)
         '''    End Sub
         '''
         '''    Private Sub New(name As String, value As UInteger)
         '''        _Name = name
-        '''        Me.Value = If(value &gt; MaxValue, MaxValue, value)
-        '''    End Sub
-        '''
-        '''   [rest of string was truncated]&quot;;.
+        '''        Me.Value = If(value &gt; MaxValue, value And MaxValue, value [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property FlagTemplate() As String
             Get
