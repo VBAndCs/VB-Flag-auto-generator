@@ -74,37 +74,69 @@ Class #FlagName#
         Return flag.Value / value
     End Operator
 
-    Public Shared Operator =(flag As #FlagName#, value As Integer) As Integer
+    Public Shared Operator ^(flag As #FlagName#, value As Integer) As Long
+        Return flag.Value ^ value
+    End Operator
+    
+    Public Shared Operator Or(flag As #FlagName#, value As Integer) As #FlagName#
+        Return New #FlagName#(flag.Value Or value)
+    End Operator
+
+    Public Shared Operator And(flag As #FlagName#, value As Integer) As #FlagName#
+        Return New #FlagName#(flag.Value And value)
+    End Operator
+
+    Public Shared Operator Xor(flag As #FlagName#, value As Integer) As #FlagName#
+        Return New #FlagName#(flag.Value Xor value)
+    End Operator
+
+    Public Shared Operator Not(flag As #FlagName#) As #FlagName#
+        Return New #FlagName#(Not flag.Value)
+    End Operator
+
+    Public Shared Operator IsTrue(flag As #FlagName#) As Boolean
+        Return flag.Value > 0
+    End Operator
+
+    Public Shared Operator IsFalse(flag As #FlagName#) As Boolean
+        Return flag.Value = 0
+    End Operator
+
+    Public Shared Operator =(flag As #FlagName#, value As Integer) As Boolean
         Return flag.Value = value
     End Operator
 
-    Public Shared Operator <>(flag As #FlagName#, value As Integer) As Integer
+    Public Shared Operator <>(flag As #FlagName#, value As Integer) As Boolean
         Return flag.Value <> value
     End Operator
 
-    Public Shared Operator >(flag As #FlagName#, value As Integer) As Integer
+    Public Shared Operator >(flag As #FlagName#, value As Integer) As Boolean
         Return flag.Value > value
     End Operator
 
-    Public Shared Operator <(flag As #FlagName#, value As Integer) As Integer
+    Public Shared Operator <(flag As #FlagName#, value As Integer) As Boolean
         Return flag.Value < value
     End Operator
 
-    Public Shared Operator >=(flag As #FlagName#, value As Integer) As Integer
+    Public Shared Operator >=(flag As #FlagName#, value As Integer) As Boolean
         Return flag.Value >= value
     End Operator
 
-    Public Shared Operator <=(flag As #FlagName#, value As Integer) As Integer
+    Public Shared Operator <=(flag As #FlagName#, value As Integer) As Boolean
         Return flag.Value <= value
     End Operator
 
     Public Overrides Function ToString() As String
+        Return ToString(""+"")
+    End Function
+
+    Public Overloads Function ToString(Separator As String) As String
         If Value = 0 Then Return NoneSet.Name
         If Value = AllSet.Value Then Return AllSet.Name
         Dim sb As New Text.StringBuilder
         For Each flag In Flags
             If (Value And flag.Value) > 0 Then
-                If sb.Length > 0 Then sb.Append("" + "")
+                If sb.Length > 0 Then sb.Append(Separator)
                 sb.Append(flag.Name)
             End If
         Next

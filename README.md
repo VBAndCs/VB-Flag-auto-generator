@@ -15,6 +15,7 @@ Instance Properties:
     OffFlags
 Instance Methods:
     ToString()
+    ToString(separator)
     ToInteger
     SetFlags
     SetAllExcxept
@@ -29,19 +30,18 @@ Instance Methods:
 
 And this is a sample of an auto-generated Flag:
 ```VB.NET
-
 Class MyFlag
     Public Shared ReadOnly X As new MyFlag("X", 1)
     Public Shared ReadOnly Y As new MyFlag("Y", 2)
     Public Shared ReadOnly Z As new MyFlag("Z", 4)
-
+    Public Shared ReadOnly W As new MyFlag("W", 8)
 
     Public Shared ReadOnly NoneSet As New MyFlag ("None", 0)
-    Public Shared ReadOnly AllSet As New MyFlag("All", 7)
+    Public Shared ReadOnly AllSet As New MyFlag("All", 15)
 
-    Public Shared ReadOnly Property Flags As MyFlag() = {X, Y, Z}
-    Public Shared ReadOnly Property FlagNames As String() = {"X", "Y", "Z"}
-    Public Shared ReadOnly Property FlagValues As Integer() = {1, 2, 4}
+    Public Shared ReadOnly Property Flags As MyFlag() = {X, Y, Z, W}
+    Public Shared ReadOnly Property FlagNames As String() = {"X", "Y", "Z", "W"}
+    Public Shared ReadOnly Property FlagValues As Integer() = {1, 2, 4, 8}
     Public ReadOnly Property Name As String
 
     Public ReadOnly Property OnFlags As List(Of MyFlag)
@@ -101,37 +101,69 @@ Class MyFlag
         Return flag.Value / value
     End Operator
 
-    Public Shared Operator =(flag As MyFlag, value As Integer) As Integer
+    Public Shared Operator ^(flag As MyFlag, value As Integer) As Long
+        Return flag.Value ^ value
+    End Operator
+    
+    Public Shared Operator Or(flag As MyFlag, value As Integer) As MyFlag
+        Return New MyFlag(flag.Value Or value)
+    End Operator
+
+    Public Shared Operator And(flag As MyFlag, value As Integer) As MyFlag
+        Return New MyFlag(flag.Value And value)
+    End Operator
+
+    Public Shared Operator Xor(flag As MyFlag, value As Integer) As MyFlag
+        Return New MyFlag(flag.Value Xor value)
+    End Operator
+
+    Public Shared Operator Not(flag As MyFlag) As MyFlag
+        Return New MyFlag(Not flag.Value)
+    End Operator
+
+    Public Shared Operator IsTrue(flag As MyFlag) As Boolean
+        Return flag.Value > 0
+    End Operator
+
+    Public Shared Operator IsFalse(flag As MyFlag) As Boolean
+        Return flag.Value = 0
+    End Operator
+
+    Public Shared Operator =(flag As MyFlag, value As Integer) As Boolean
         Return flag.Value = value
     End Operator
 
-    Public Shared Operator <>(flag As MyFlag, value As Integer) As Integer
+    Public Shared Operator <>(flag As MyFlag, value As Integer) As Boolean
         Return flag.Value <> value
     End Operator
 
-    Public Shared Operator >(flag As MyFlag, value As Integer) As Integer
+    Public Shared Operator >(flag As MyFlag, value As Integer) As Boolean
         Return flag.Value > value
     End Operator
 
-    Public Shared Operator <(flag As MyFlag, value As Integer) As Integer
+    Public Shared Operator <(flag As MyFlag, value As Integer) As Boolean
         Return flag.Value < value
     End Operator
 
-    Public Shared Operator >=(flag As MyFlag, value As Integer) As Integer
+    Public Shared Operator >=(flag As MyFlag, value As Integer) As Boolean
         Return flag.Value >= value
     End Operator
 
-    Public Shared Operator <=(flag As MyFlag, value As Integer) As Integer
+    Public Shared Operator <=(flag As MyFlag, value As Integer) As Boolean
         Return flag.Value <= value
     End Operator
 
     Public Overrides Function ToString() As String
+        Return ToString("+")
+    End Function
+
+    Public Overloads Function ToString(Separator As String) As String
         If Value = 0 Then Return NoneSet.Name
         If Value = AllSet.Value Then Return AllSet.Name
         Dim sb As New Text.StringBuilder
         For Each flag In Flags
             If (Value And flag.Value) > 0 Then
-                If sb.Length > 0 Then sb.Append(" + ")
+                If sb.Length > 0 Then sb.Append(Separator)
                 sb.Append(flag.Name)
             End If
         Next
@@ -194,11 +226,11 @@ Class MyFlag
     End Function
 
     Public Function ToggleAllFlags() As MyFlag
-        Return Value Xor 7
+        Return Value Xor 15
     End Function
 
     Public Function AreAllSet(ParamArray flags() As MyFlag) As Boolean
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value = 7
+        If flags Is Nothing OrElse flags.Length = 0 Then Return Value = 15
 
         For Each flag In flags
             If (Value And flag.Value) = 0 Then Return False
@@ -225,7 +257,7 @@ Class MyFlag
     End Function
 
     Public Function AreAnyUnset(ParamArray flags() As MyFlag) As Boolean
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value < 7
+        If flags Is Nothing OrElse flags.Length = 0 Then Return Value < 15
 
         For Each flag In flags
             If (Value And flag.Value) = 0 Then Return True
