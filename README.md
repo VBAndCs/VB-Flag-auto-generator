@@ -1,7 +1,7 @@
 # Flag auto-generator
 ![Flags](https://user-images.githubusercontent.com/48354902/97733916-1c518380-1ae1-11eb-8454-c197d006b826.jpg)
 A Windows Forms app, that allows you to enter the name of the Flag and its members, then press the Generate button to auto-generate a class that represents this flags and its members, and many methods to do flag operations and set and unset flags.
-The underline type of the flag is Integer, and the class contains CType operators to convert between them. This is a list of the members I added to the class:
+The underline type of the flag is Integer, and the class contains CType operators and arithmetic operators to convert between them. This is a list of the members I added to the class, noting that the flag is immutable, and methods don't change its state, but return a new instance carring the result:
 Shared Fields:  
     NoneSet
     AllSet
@@ -31,17 +31,16 @@ Instance Methods:
 And this is a sample of an auto-generated Flag:
 ```VB.NET
 Class MyFlag
-    Public Shared ReadOnly X As new MyFlag("X", 1)
-    Public Shared ReadOnly Y As new MyFlag("Y", 2)
-    Public Shared ReadOnly Z As new MyFlag("Z", 4)
-    Public Shared ReadOnly W As new MyFlag("W", 8)
+    Public Shared ReadOnly X As New MyFlag("X", 1)
+    Public Shared ReadOnly Y As New MyFlag("Y", 2)
+    Public Shared ReadOnly Z As New MyFlag("Z", 4)
 
-    Public Shared ReadOnly NoneSet As New MyFlag ("None", 0)
-    Public Shared ReadOnly AllSet As New MyFlag("All", 15)
+    Public Shared ReadOnly NoneSet As New MyFlag("None", 0)
+    Public Shared ReadOnly AllSet As New MyFlag("All", 7)
 
-    Public Shared ReadOnly Property Flags As MyFlag() = {X, Y, Z, W}
-    Public Shared ReadOnly Property FlagNames As String() = {"X", "Y", "Z", "W"}
-    Public Shared ReadOnly Property FlagValues As Integer() = {1, 2, 4, 8}
+    Public Shared ReadOnly Property Flags As MyFlag() = {X, Y, Z}
+    Public Shared ReadOnly Property FlagNames As String() = {"X", "Y", "Z"}
+    Public Shared ReadOnly Property FlagValues As Integer() = {1, 2, 4}
     Public ReadOnly Property Name As String
 
     Public ReadOnly Property OnFlags As List(Of MyFlag)
@@ -75,83 +74,6 @@ Class MyFlag
         _Name = name
         Me.Value = value
     End Sub
-
-    Public Shared Widening Operator CType(value As Integer) As MyFlag
-        Return New MyFlag(value)
-    End Operator
-
-    Public Shared Narrowing Operator CType(flag As MyFlag) As Integer
-        Return flag.Value
-    End Operator
-
-
-    Public Shared Operator +(flag As MyFlag, value As Integer) As Integer
-        Return flag.Value + value
-    End Operator
-
-    Public Shared Operator -(flag As MyFlag, value As Integer) As Integer
-        Return flag.Value - value
-    End Operator
-
-    Public Shared Operator *(flag As MyFlag, value As Integer) As Integer
-        Return flag.Value * value
-    End Operator
-
-    Public Shared Operator /(flag As MyFlag, value As Integer) As Integer
-        Return flag.Value / value
-    End Operator
-
-    Public Shared Operator ^(flag As MyFlag, value As Integer) As Long
-        Return flag.Value ^ value
-    End Operator
-    
-    Public Shared Operator Or(flag As MyFlag, value As Integer) As MyFlag
-        Return New MyFlag(flag.Value Or value)
-    End Operator
-
-    Public Shared Operator And(flag As MyFlag, value As Integer) As MyFlag
-        Return New MyFlag(flag.Value And value)
-    End Operator
-
-    Public Shared Operator Xor(flag As MyFlag, value As Integer) As MyFlag
-        Return New MyFlag(flag.Value Xor value)
-    End Operator
-
-    Public Shared Operator Not(flag As MyFlag) As MyFlag
-        Return New MyFlag(Not flag.Value)
-    End Operator
-
-    Public Shared Operator IsTrue(flag As MyFlag) As Boolean
-        Return flag.Value > 0
-    End Operator
-
-    Public Shared Operator IsFalse(flag As MyFlag) As Boolean
-        Return flag.Value = 0
-    End Operator
-
-    Public Shared Operator =(flag As MyFlag, value As Integer) As Boolean
-        Return flag.Value = value
-    End Operator
-
-    Public Shared Operator <>(flag As MyFlag, value As Integer) As Boolean
-        Return flag.Value <> value
-    End Operator
-
-    Public Shared Operator >(flag As MyFlag, value As Integer) As Boolean
-        Return flag.Value > value
-    End Operator
-
-    Public Shared Operator <(flag As MyFlag, value As Integer) As Boolean
-        Return flag.Value < value
-    End Operator
-
-    Public Shared Operator >=(flag As MyFlag, value As Integer) As Boolean
-        Return flag.Value >= value
-    End Operator
-
-    Public Shared Operator <=(flag As MyFlag, value As Integer) As Boolean
-        Return flag.Value <= value
-    End Operator
 
     Public Overrides Function ToString() As String
         Return ToString("+")
@@ -226,11 +148,11 @@ Class MyFlag
     End Function
 
     Public Function ToggleAllFlags() As MyFlag
-        Return Value Xor 15
+        Return Value Xor 7
     End Function
 
     Public Function AreAllSet(ParamArray flags() As MyFlag) As Boolean
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value = 15
+        If flags Is Nothing OrElse flags.Length = 0 Then Return Value = 7
 
         For Each flag In flags
             If (Value And flag.Value) = 0 Then Return False
@@ -257,13 +179,18 @@ Class MyFlag
     End Function
 
     Public Function AreAnyUnset(ParamArray flags() As MyFlag) As Boolean
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value < 15
+        If flags Is Nothing OrElse flags.Length = 0 Then Return Value < 7
 
         For Each flag In flags
             If (Value And flag.Value) = 0 Then Return True
         Next
         Return False
     End Function
+
+#Region "Operators"
+    ' Contains all arithmetic and logical operators to work on Flags and Integers
+    ' No need to publish them all here
+#End Region
 End Class
 ```
 

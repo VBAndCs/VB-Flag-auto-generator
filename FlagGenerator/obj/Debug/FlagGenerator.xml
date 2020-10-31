@@ -22,5 +22,21 @@ FlagGenerator
   resource lookups using this strongly typed resource class.
 </summary>
 </member>
+<member name="P:FlagGenerator.My.Resources.Resources.FlagTemplate">
+<summary>
+  Looks up a localized string similar to Class #FlagName#
+#Flags#
+    Public Shared ReadOnly NoneSet As New #FlagName# (&quot;None&quot;, 0)
+    Public Shared ReadOnly AllSet As New #FlagName#(&quot;All&quot;, #MaxValue#)
+
+    Public Shared ReadOnly Property Flags As #FlagName#() = {#FlagList#}
+    Public Shared ReadOnly Property FlagNames As String() = {#StrFlagList#}
+    Public Shared ReadOnly Property FlagValues As Integer() = {#ValueList#}
+    Public ReadOnly Property Name As String
+
+    Public ReadOnly Property OnFlags As List(Of #FlagName#)
+        G [rest of string was truncated]&quot;;.
+</summary>
+</member>
 </members>
 </doc>
