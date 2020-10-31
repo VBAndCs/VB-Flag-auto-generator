@@ -15,6 +15,7 @@ Instance Properties:
     Name
     OnFlags 
     OffFlags
+    IsSet(flag)  ' A default readonly property (Indexer) that returns true if the given flag is set.
 Instance Methods:
     ToString()
     ToString(separator)
@@ -33,7 +34,8 @@ Instance Methods:
 
 And this is a sample of an auto-generated Flag:
 ```VB.NET
-Public Shared ReadOnly X As New MyFlag("X", 1)
+Class MyFlag
+    Public Shared ReadOnly X As New MyFlag("X", 1)
     Public Shared ReadOnly Y As New MyFlag("Y", 2)
     Public Shared ReadOnly Z As New MyFlag("Z", 4)
 
@@ -57,7 +59,7 @@ Public Shared ReadOnly X As New MyFlag("X", 1)
     Public Shared ReadOnly Property FlagValues As UInteger() = {1, 2, 4}
     Public ReadOnly Property Name As String
 
-    Public ReadOnly Property OnFlags As List(Of MyFlag)
+    Public Property OnFlags As List(Of MyFlag)
         Get
             Dim lstFlags As New List(Of MyFlag)
             For Each flag In Flags
@@ -65,9 +67,12 @@ Public Shared ReadOnly X As New MyFlag("X", 1)
             Next
             Return lstFlags
         End Get
+        Set()
+            SetFlags(Value.ToArray())
+        End Set
     End Property
 
-    Public ReadOnly Property OffFlags As List(Of MyFlag)
+    Public Property OffFlags As List(Of MyFlag)
         Get
             Dim lstFlags As New List(Of MyFlag)
             For Each flag In Flags
@@ -75,8 +80,16 @@ Public Shared ReadOnly X As New MyFlag("X", 1)
             Next
             Return lstFlags
         End Get
+        Set()
+            UnsetFlags(Value.ToArray)
+        End Set
     End Property
 
+    Default Public ReadOnly Property IsSet(flag As MyFlag) As Boolean
+        Get
+            Return (Value And flag.Value) > 0
+        End Get
+    End Property
 
     Public Overrides Function ToString() As String
         Return ToString("+")
@@ -106,7 +119,7 @@ Public Shared ReadOnly X As New MyFlag("X", 1)
         For Each flag In flags
             v = v Or flag.Value
         Next
-        Return v
+        Return New MyFlag(v)
     End Function
 
     Public Function SetAllExcxept(ParamArray flags() As MyFlag) As MyFlag
@@ -116,7 +129,7 @@ Public Shared ReadOnly X As New MyFlag("X", 1)
         For Each flag In flags
             v = v Or flag.Value
         Next
-        Return Value And Not v
+        Return New MyFlag(Value And Not v)
     End Function
 
 
@@ -127,7 +140,7 @@ Public Shared ReadOnly X As New MyFlag("X", 1)
         For Each flag In flags
             v = v And Not flag.Value
         Next
-        Return v
+        Return New MyFlag(v)
     End Function
 
     Public Function UnsetAllExcxept(ParamArray flags() As MyFlag) As MyFlag
@@ -137,7 +150,7 @@ Public Shared ReadOnly X As New MyFlag("X", 1)
         For Each flag In flags
             v = v Or flag.Value
         Next
-        Return v
+        Return New MyFlag(v)
     End Function
 
     Public Function ToggleFlags(ParamArray flags() As MyFlag) As MyFlag
@@ -147,11 +160,11 @@ Public Shared ReadOnly X As New MyFlag("X", 1)
         For Each flag In flags
             v = v Xor flag.Value
         Next
-        Return v
+        Return New MyFlag(v)
     End Function
 
     Public Function ToggleAllFlags() As MyFlag
-        Return Value Xor 7
+        Return New MyFlag(Value Xor 7)
     End Function
 
     Public Function AreAllSet(ParamArray flags() As MyFlag) As Boolean
@@ -189,7 +202,6 @@ Public Shared ReadOnly X As New MyFlag("X", 1)
         Next
         Return False
     End Function
-
 #Region "Operators"
     ' Contains all arithmetic and logical operators to work on Flags and Integers
     ' No need to publish them all here

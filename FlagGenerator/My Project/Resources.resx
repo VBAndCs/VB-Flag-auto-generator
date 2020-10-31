@@ -140,7 +140,7 @@
     Public Shared ReadOnly Property FlagValues As UInteger() = {#ValueList#}
     Public ReadOnly Property Name As String
 
-    Public ReadOnly Property OnFlags As List(Of #FlagName#)
+    Public Property OnFlags As List(Of #FlagName#)
         Get
             Dim lstFlags As New List(Of #FlagName#)
             For Each flag In Flags
@@ -148,9 +148,12 @@
             Next
             Return lstFlags
         End Get
+        Set()
+            SetFlags(Value.ToArray())
+        End Set
     End Property
 
-    Public ReadOnly Property OffFlags As List(Of #FlagName#)
+    Public Property OffFlags As List(Of #FlagName#)
         Get
             Dim lstFlags As New List(Of #FlagName#)
             For Each flag In Flags
@@ -158,8 +161,16 @@
             Next
             Return lstFlags
         End Get
+        Set()
+            UnsetFlags(Value.ToArray)
+        End Set
     End Property
 
+    Default Public ReadOnly Property IsSet(flag As #FlagName#) As Boolean
+        Get
+            Return (Value And flag.Value) &gt; 0
+        End Get
+    End Property
 
     Public Overrides Function ToString() As String
         Return ToString("+")
@@ -189,7 +200,7 @@
         For Each flag In flags
             v = v Or flag.Value
         Next
-        Return v
+        Return New #FlagName#(v)
     End Function
 
     Public Function SetAllExcxept(ParamArray flags() As #FlagName#) As #FlagName#
@@ -199,7 +210,7 @@
         For Each flag In flags
             v = v Or flag.Value
         Next
-        Return Value And Not v
+        Return New #FlagName#(Value And Not v)
     End Function
 
 
@@ -210,7 +221,7 @@
         For Each flag In flags
             v = v And Not flag.Value
         Next
-        Return v
+        Return New #FlagName#(v)
     End Function
 
     Public Function UnsetAllExcxept(ParamArray flags() As #FlagName#) As #FlagName#
@@ -220,7 +231,7 @@
         For Each flag In flags
             v = v Or flag.Value
         Next
-        Return v
+        Return New #FlagName#(v)
     End Function
 
     Public Function ToggleFlags(ParamArray flags() As #FlagName#) As #FlagName#
@@ -230,11 +241,11 @@
         For Each flag In flags
             v = v Xor flag.Value
         Next
-        Return v
+        Return New #FlagName#(v)
     End Function
 
     Public Function ToggleAllFlags() As #FlagName#
-        Return Value Xor #MaxValue#
+        Return New #FlagName#(Value Xor #MaxValue#)
     End Function
 
     Public Function AreAllSet(ParamArray flags() As #FlagName#) As Boolean
@@ -279,7 +290,7 @@
         Return New #FlagName#(value)
     End Operator
 
-    Public Shared Narrowing Operator CType(flag As #FlagName#) As UInteger
+    Public Shared Widening Operator CType(flag As #FlagName#) As UInteger
         Return flag.Value
     End Operator
 
