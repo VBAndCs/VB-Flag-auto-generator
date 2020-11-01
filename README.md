@@ -49,12 +49,12 @@ Class MyFlag
     Private ReadOnly Value As UInteger
 
     Private Sub New(value As UInteger)
-        Me.Value = If(value > MaxValue, MaxValue, value)
+        Me.Value = If(value > MaxValue, value And MaxValue, value)
     End Sub
 
     Private Sub New(name As String, value As UInteger)
         _Name = name
-        Me.Value = If(value > MaxValue, MaxValue, value)
+        Me.Value = If(value > MaxValue, value And MaxValue, value)
     End Sub
 
     Public Shared ReadOnly Property Flags As MyFlag() = {X, Y, Z}
@@ -115,8 +115,12 @@ Class MyFlag
         Return Value
     End Function
 
+    Public Function SetFlag(flag As MyFlag) As MyFlag
+        Return New MyFlag(Value Or flag.Value)
+    End Function
+
     Public Function SetFlags(ParamArray flags() As MyFlag) As MyFlag
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value
+        If flags Is Nothing OrElse flags.Length = 0 Then Return New MyFlag(Value)
 
         Dim v = Value
         For Each flag In flags
@@ -126,18 +130,21 @@ Class MyFlag
     End Function
 
     Public Function SetAllExcxept(ParamArray flags() As MyFlag) As MyFlag
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value
+        If flags Is Nothing OrElse flags.Length = 0 Then Return New MyFlag(Value)
 
-        Dim v As UInteger = 0
+        Dim v = MaxValue
         For Each flag In flags
-            v = v Or flag.Value
+            v -= flag.Value
         Next
-        Return New MyFlag(Value And Not v)
+        Return New MyFlag(v)
     End Function
 
+    Public Function UnsetFlag(flag As MyFlag) As MyFlag
+        Return New MyFlag(Value And Not flag.Value)
+    End Function
 
     Public Function UnsetFlags(ParamArray flags() As MyFlag) As MyFlag
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value
+        If flags Is Nothing OrElse flags.Length = 0 Then Return New MyFlag(Value)
 
         Dim v = Value
         For Each flag In flags
@@ -147,17 +154,21 @@ Class MyFlag
     End Function
 
     Public Function UnsetAllExcxept(ParamArray flags() As MyFlag) As MyFlag
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value
+        If flags Is Nothing OrElse flags.Length = 0 Then Return New MyFlag(Value)
 
         Dim v As UInteger = 0
         For Each flag In flags
-            v = v Or flag.Value
+            v += flag.Value
         Next
         Return New MyFlag(v)
     End Function
 
+    Public Function ToggleFlag(flag As MyFlag) As MyFlag
+        Return New MyFlag(Value Xor flag.Value)
+    End Function
+
     Public Function ToggleFlags(ParamArray flags() As MyFlag) As MyFlag
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value
+        If flags Is Nothing OrElse flags.Length = 0 Then Return New MyFlag(Value)
 
         Dim v = Value
         For Each flag In flags
@@ -205,6 +216,7 @@ Class MyFlag
         Next
         Return False
     End Function
+
 #Region "Operators"
     ' Contains all arithmetic and logical operators to work on Flags and Integers
     ' No need to publish them all here
