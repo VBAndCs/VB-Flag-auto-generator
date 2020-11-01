@@ -37,7 +37,7 @@ Partial Class Form1
         Me.btnGenerate.Margin = New System.Windows.Forms.Padding(5, 4, 5, 4)
         Me.btnGenerate.Name = "btnGenerate"
         Me.btnGenerate.Size = New System.Drawing.Size(118, 34)
-        Me.btnGenerate.TabIndex = 0
+        Me.btnGenerate.TabIndex = 1
         Me.btnGenerate.Text = "Generate"
         Me.btnGenerate.UseVisualStyleBackColor = True
         '
@@ -47,7 +47,7 @@ Partial Class Form1
         Me.btnSave.Margin = New System.Windows.Forms.Padding(5, 4, 5, 4)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(118, 34)
-        Me.btnSave.TabIndex = 0
+        Me.btnSave.TabIndex = 2
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = True
         '
@@ -56,7 +56,7 @@ Partial Class Form1
         Me.txtName.Location = New System.Drawing.Point(16, 47)
         Me.txtName.Name = "txtName"
         Me.txtName.Size = New System.Drawing.Size(241, 32)
-        Me.txtName.TabIndex = 1
+        Me.txtName.TabIndex = 0
         '
         'Label1
         '
@@ -92,7 +92,7 @@ Partial Class Form1
         Me.txtResult.Name = "txtResult"
         Me.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.txtResult.Size = New System.Drawing.Size(633, 445)
-        Me.txtResult.TabIndex = 1
+        Me.txtResult.TabIndex = 3
         '
         'Form1
         '

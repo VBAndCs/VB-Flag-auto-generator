@@ -256,11 +256,11 @@
     End Function
 
     Public Function ToggleAllFlags() As #FlagName#
-        Return New #FlagName#(Value Xor #MaxValue#)
+        Return New #FlagName#(Value Xor MaxValue)
     End Function
 
     Public Function AreAllSet(ParamArray flags() As #FlagName#) As Boolean
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value = #MaxValue#
+        If flags Is Nothing OrElse flags.Length = 0 Then Return Value = MaxValue
 
         For Each flag In flags
             If (Value And flag.Value) = 0 Then Return False
@@ -287,7 +287,7 @@
     End Function
 
     Public Function AreAnyUnset(ParamArray flags() As #FlagName#) As Boolean
-        If flags Is Nothing OrElse flags.Length = 0 Then Return Value &lt; #MaxValue#
+        If flags Is Nothing OrElse flags.Length = 0 Then Return Value &lt; MaxValue
 
         For Each flag In flags
             If (Value And flag.Value) = 0 Then Return True
